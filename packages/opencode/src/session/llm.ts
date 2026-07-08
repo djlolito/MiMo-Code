@@ -294,8 +294,10 @@ const live: Layer.Layer<
       // per-session paths — but within a session those paths are fixed, so the
       // whole thing is stable and one block caches just as well. One message also
       // keeps the fork-prefix parity invariant trivial (nothing to misalign) and
-      // spares subagents/providers a stray extra system turn.
-      return system.length <= 1 ? system : [system.filter((x) => x).join("\n")]
+      // spares subagents/providers a stray extra system turn. Join with a blank
+      // line (\n\n) so adjacent markdown sections (base prompt, "# Memory system")
+      // don't run together into one heading.
+      return system.length <= 1 ? system : [system.filter((x) => x).join("\n\n")]
     })
 
     const run = Effect.fn("LLM.run")(function* (input: StreamRequest) {
